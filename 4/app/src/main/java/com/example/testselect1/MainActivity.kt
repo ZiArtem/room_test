@@ -11,9 +11,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
-import com.example.testselect1.data.User
-import com.example.testselect1.data.UserDao
-import com.example.testselect1.data.UserDatabase
+import com.example.testselect1.data.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -22,6 +20,7 @@ lateinit var  but1: Button
 var  textTest:String = "dont work"
 lateinit var db: UserDatabase
 lateinit  var userDao:UserDao
+lateinit  var pasDao:PasswordDao
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +32,10 @@ class MainActivity : AppCompatActivity() {
         val db = Room.databaseBuilder(
             applicationContext,
             UserDatabase::class.java, "user_table"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
 
         userDao = db.userDao()
+        pasDao = db.passwordDao()
 
         but.setOnClickListener{
             lifecycleScope.launch {
@@ -53,13 +53,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private suspend fun signIn (){
-//        val u1  = User(0,"tty","678")
-//        userDao.insertUser(u1)
+        val user1  = User("tema11","tema","zzz")
+        val password1 = Password("tema11","ghj")
+
+//        userDao.insertUser(user1)
+//        pasDao.insertPassword(password1)
 
         Thread(Runnable {
-            var users = userDao.getUser("tty","678")
+            var pas = pasDao.getLogin("tema11","ghj")
 
-            if (!users.isEmpty()) {
+            if (!pas.isEmpty()) {
                 runOnUiThread {
                     Toast.makeText(applicationContext, "success!!!!!!!!!!!", Toast.LENGTH_SHORT).show()
                 }

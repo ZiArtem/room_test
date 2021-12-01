@@ -1,7 +1,7 @@
 package com.example.testselect1.data
 
 import androidx.room.*
-//import io.reactivex.Single
+
 
 @Dao
 interface UserDao {
@@ -17,3 +17,5 @@ interface UserDao {
     @Delete
     fun delete(user: User)
 }
+
+
